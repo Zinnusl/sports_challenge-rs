@@ -8,7 +8,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let ctx = zmq::Context::new();
 
     let pull_sock = ctx.socket(zmq::SocketType::PULL).unwrap();
-    pull_sock.connect("tcp://127.0.0.1:36601")?;
+    pull_sock.connect("tcp://0.0.0.0:36601")?;
     let mut msg = zmq::Message::new();
 
     loop {

@@ -8,7 +8,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let ctx = zmq::Context::new();
 
     let pull_sock = ctx.socket(zmq::SocketType::PUSH)?;
-    pull_sock.bind("tcp://127.0.0.1:36601")?;
+    pull_sock.bind("tcp://0.0.0.0:36601")?;
     let data = proto::Position {
         sensor_id: 1,
         timestamp_usec: 500,
@@ -20,13 +20,14 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     };
     let msg = data.encode_to_vec();
 
-    println!("Es wird jetzt geloopet, digger");
+    println!("Starting server...");
 
     loop {
         let err = pull_sock.send(&msg, 0);
 
         if err.is_err() {
-            println!("Error!");
+            println!("Error when sending!");
+            err?;
         } else {
             println!("sent {} bytes", msg.len());
         }

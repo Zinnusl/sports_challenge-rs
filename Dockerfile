@@ -14,10 +14,8 @@ RUN apt-get update && apt-get install -y \
 
 RUN cargo build --release
 
-RUN cp /usr/src/target/release/client /usr/local/bin/client
-RUN cp /usr/src/target/release/server /usr/local/bin/server
-
 EXPOSE 36601
 
-# CMD ["client"]
-ENTRYPOINT ["server"]
+ENV binary client
+
+CMD ["sh", "-c", "cargo run --release --bin ${binary}"]
